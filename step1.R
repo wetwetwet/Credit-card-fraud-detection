@@ -1,5 +1,7 @@
 app.df <- read.csv("~/Doc/credit card fraud/application_record.csv",header=TRUE)
 table(is.na(app.df[,])) #ensure there is no NA
+
+
 str(app.df) #檢視變數綱要
 table(app.df$NAME_INCOME_TYPE) #檢視類別變數內容物
 table(app.df$NAME_EDUCATION_TYPE)
