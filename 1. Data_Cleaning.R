@@ -1,5 +1,7 @@
+# Input Data
 app.df <- read.csv("~/Doc/credit card fraud/application_record.csv",header=TRUE)
-table(is.na(app.df[,])) #ensure there is no NA
+# ensure there is no NA
+table(is.na(app.df)) 
 
 # Inspect the structure of the data
 str(app.df) 
@@ -15,17 +17,17 @@ table(app.df$OCCUPATION_TYPE)
 app.df <- app.df[,-17]  
 
 # Turn factors into numeric type in order to calculate correlation coefficient
-app.df$CODE_GENDER <- factor(app.df$CODE_GENDER, levels = c("M","F"), labels = c(1,2))
+app.df$CODE_GENDER <- factor(app.df$CODE_GENDER, levels = c("M", "F"), labels = c(1, 2))
 app.df$CODE_GENDER <- as.numeric(as.character(app.df$CODE_GENDER))
 table(app.df$CODE_GENDER) 
 
-app.df$FLAG_OWN_CAR <- factor(app.df$FLAG_OWN_CAR, levels = c("N","Y"), labels = c(0,1))
+app.df$FLAG_OWN_CAR <- factor(app.df$FLAG_OWN_CAR, levels = c("N", "Y"), labels = c(0, 1))
 app.df$FLAG_OWN_CAR <- as.numeric(as.character(app.df$FLAG_OWN_CAR))
 table(app.df$FLAG_OWN_CAR)  
 str(app.df)
 
 table(app.df$NAME_INCOME_TYPE)
-app.df$NAME_INCOME_TYPE <- factor(app.df$NAME_INCOME_TYPE, levels = c("Commercial associate","Pensioner","State servant","Student","Working"), labels = c(1,2,3,4,5))
+app.df$NAME_INCOME_TYPE <- factor(app.df$NAME_INCOME_TYPE, levels = c("Commercial associate", "Pensioner", "State servant", "Student", "Working"), labels = c(1, 2, 3, 4, 5))
 app.df$NAME_INCOME_TYPE <- as.numeric(as.character(app.df$NAME_INCOME_TYPE))
 
 table(app.df$NAME_EDUCATION_TYPE)
@@ -90,10 +92,13 @@ names(credit_mon.df)[names(credit_mon.df)=="x"] <- "USE_MON"
 
 # combine the two dataframe by "ID"
 credit2.df <- merge(credit_mon.df,credit_sum.df,by="ID")
+
 # ensure there is not NA
 table(is.na(credit2.df))
+
 # Change col. name into "STATUS_sum"
 names(credit2.df)[names(credit2.df)=="x"] <- "STATUS_sum"
+
 # create new variable: average pay status:AVG_PAY
 credit2.df$AVG_PAY <- round(credit2.df$STATUS_sum/credit2.df$USE_MON,2)
 
@@ -110,13 +115,16 @@ credit4.df <- credit3.df[,-13]
 
 # draw the correlation plot to check the relationship between all variables
 install.packages('corrplot')
-library(corrplot) #check correlation coefficient
+
+#check correlation coefficient
+library(corrplot) 
 cor(credit4.df)
 corrplot.mixed(corr=cor(credit4.df, use="complete.obs"), 
                upper="ellipse" , tl.pos= "lt", tl.cex=0.5,number.cex = 0.5)
 
 # remove Family Size because of Correlation Coefficient
 credit4.df <- credit4.df[,-16]
+
 # remove STATUS_sum because of Correlation Coefficient
 credit4.df <- credit4.df[,-17]
 corrplot.mixed(corr=cor(credit4.df, use="complete.obs"), 
